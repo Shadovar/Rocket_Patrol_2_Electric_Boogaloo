@@ -1,6 +1,6 @@
 //Rocket prefab
 class Rocket extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture , frame)
+    constructor(scene, x, y, texture, frame)
     {
         super(scene, x, y, texture, frame);
 
@@ -14,11 +14,23 @@ class Rocket extends Phaser.GameObjects.Sprite {
     {
         //Horizontal movement
         if(!this.isFiring){
-            if(keyLEFT.isDown && this.x >= 47){
-                this.x -= 2;
+            //Single player horizontal inputs
+            if(game.settings.numPlayers == 1){
+                if(keyLEFT.isDown && this.x >= 47){
+                    this.x -= 2;
+                }
+                if(keyRIGHT.isDown && this.x <= game.config.width-62){
+                    this.x += 2;
+                }
             }
-            if(keyRIGHT.isDown && this.x <= game.config.width-62){
-                this.x += 2;
+            //Two player horizontal inputs
+            else{
+                if(keyD.isDown && this.x >= 47){
+                    this.x -= 2;
+                }
+                if(keyG.isDown && this.x <= game.config.width-62){
+                    this.x += 2;
+                }   
             }
         }
 
