@@ -5,12 +5,12 @@ class Play extends Phaser.Scene {
 
     preload() {
         //Load images and tile sprite
-        this.load.image('rocket', "./assets/rocket.png");
-        this.load.image('spaceship',"./assets/spaceship.png");
-        this.load.image('starfield',"./assets/starfield.png");
+        this.load.image('rocket', "./assets/orcaFin.png");
+        this.load.image('spaceship',"./assets/moose.png");
+        this.load.image('starfield',"./assets/ocean.png");
 
         //Add explosion
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion', './assets/eatMooseSheet.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 17});
     }
 
     create() {
@@ -32,7 +32,7 @@ class Play extends Phaser.Scene {
         if(game.settings.numPlayers == 2){
             //In a 2 player game, set the selected ship to be the lowest one 
             this.ship01.toggleSelected();
-            this.ship01.setTint('0xFF0000');
+            this.ship01.setTint('0x885200');
         }
         //Instantiate tracker of p2's selected ship
         this.p2Ship = {
@@ -62,7 +62,7 @@ class Play extends Phaser.Scene {
         //Add animation
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 17, first: 0}),
             frameRate: 30
         });
 
@@ -195,6 +195,7 @@ class Play extends Phaser.Scene {
     //Handles the explosion of a ship
     shipExplode(ship) {
         ship.alpha = 0;                         // temporarily hide ship
+        this.p1Rocket.alpha = 0;
         this.sound.play('sfx_explosion');
         // create explosion sprite at ship's position
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
@@ -202,6 +203,7 @@ class Play extends Phaser.Scene {
         boom.on('animationcomplete', () => {    // callback after animation completes
             ship.reset();                       // reset ship position
             ship.alpha = 1;                     // make ship visible again
+            this.p1Rocket.alpha = 1;
             boom.destroy();                     // remove explosion sprite
         });
 
@@ -257,6 +259,6 @@ class Play extends Phaser.Scene {
 
         //Toggle the newly selected ship
         this.p2Ship.ship.toggleSelected();
-        this.p2Ship.ship.setTint('0xFF0000');
+        this.p2Ship.ship.setTint('0x885200');
     }
 }
