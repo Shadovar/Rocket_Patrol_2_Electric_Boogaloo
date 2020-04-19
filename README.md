@@ -1,9 +1,9 @@
 # Rocket_Patrol_2_Electric_Boogaloo
 
-Name: Carl Erez
-    Altice
-    CMPM 120
-    4-19-20
+Name: Carl Erez  
+Altice  
+CMPM 120  
+4-19-20  
 
     Point Breakdown:
         50: Simultaneous Local Multiplayer
