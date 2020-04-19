@@ -15,4 +15,4 @@ game.settings = {
 }
 
 //reserve some keyboard variables
-let keyF, keyG, keyD, keyUP, keyDOWN, keyLEFT, keyRIGHT;
+let keyS, keyA, keyD, keyUP, keyDOWN, keyLEFT, keyRIGHT;

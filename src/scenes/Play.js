@@ -23,7 +23,7 @@ class Play extends Phaser.Scene {
         console.log(this.starfield);
 
         //Add rocket player one
-        this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setScale(0.5,0.5).setOrigin(0,0);
+        this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setOrigin(0,0);
 
         //Add starships
         this.ship03 = new Starship(this, game.config.width + 192, 132, 'spaceship', 0, 30, 3).setOrigin(0,0);
@@ -50,12 +50,12 @@ class Play extends Phaser.Scene {
         this.add.rectangle(603,5,32,455, 0xFFFFFF).setOrigin(0,0);
 
         //Create Green UI background
-        this.add.rectangle(37,42,566,64, 0x00FF00).setOrigin(0,0);
+        this.add.rectangle(37,42,566,64, 0x3fb912).setOrigin(0,0);
 
         //Define keyboard inputs
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -79,7 +79,7 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
+            backgroundColor: '#ef7827',
             color: '#843605',
             align: 'right',
             padding: {
@@ -106,16 +106,16 @@ class Play extends Phaser.Scene {
                 this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             }
             else if(this.p1Score > this.p2Score){
-                this.add.text(game.config.width/2, game.config.height/2, 'Player 1 Wins', scoreConfig).setOrigin(0.5);
+                this.add.text(game.config.width/2, game.config.height/2, 'Orca Wins', scoreConfig).setOrigin(0.5);
             }
             else if(this.p1Score < this.p2Score){
-                this.add.text(game.config.width/2, game.config.height/2, 'Player 2 Wins', scoreConfig).setOrigin(0.5);
+                this.add.text(game.config.width/2, game.config.height/2, 'Moose Wins', scoreConfig).setOrigin(0.5);
             }
             else{
                 this.add.text(game.config.width/2, game.config.height/2, 'Entropy Wins', scoreConfig).setOrigin(0.5);
             }
             //Add remaining text
-            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, '(S)wim to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -124,19 +124,19 @@ class Play extends Phaser.Scene {
 
         // check key input for restart
         if(this.gameOver){
-            if(Phaser.Input.Keyboard.JustDown(keyF)){ //Restart
+            if(Phaser.Input.Keyboard.JustDown(keyS)){ //Restart
                 this.scene.restart(this.p1Score);
             } else if (Phaser.Input.Keyboard.JustDown(keyLEFT)){ //Return to menu
                 this.scene.start("menuScene"); 
             }
         }
 
-        //scroll starfield
-        this.starfield.tilePositionX += 3.5;
-        this.starfield.tilePositionY -= 1;
-
         //only update player/enemies if game is not over
         if(!this.gameOver){
+            //scroll starfield
+            this.starfield.tilePositionX += 3.5;
+            this.starfield.tilePositionY -= 1;
+
             //Update rocket
             this.p1Rocket.update();
 
@@ -147,17 +147,17 @@ class Play extends Phaser.Scene {
         }
 
         //Check for rocket-starship collisions
-        if(this.checkCollision(this.p1Rocket, this.ship01)){
+        if(this.checkCollision(this.p1Rocket, this.ship03)){
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+            this.shipExplode(this.ship03);
         }
         if(this.checkCollision(this.p1Rocket, this.ship02)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship03)){
+        if(this.checkCollision(this.p1Rocket, this.ship01)){
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+            this.shipExplode(this.ship01);
         }
 
         //Check if a starship has crossed the screen
@@ -211,6 +211,9 @@ class Play extends Phaser.Scene {
 
         // score increment and repaint
         this.p1Score += ship.points;
+        if(game.settings.numPlayers == 2){
+            this.p1Score += 5; //Some extra points to help balance the scales for P1
+        }
         this.scoreLeft.text = this.p1Score;       
     }
 

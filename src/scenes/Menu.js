@@ -23,9 +23,9 @@ class Menu extends Phaser.Scene {
         //Initialize score text
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            fontSize: '12px',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
             align: 'right',
             padding: {
                 top: 5,
@@ -37,20 +37,29 @@ class Menu extends Phaser.Scene {
         //Show menu text
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
-        let textSpacer = 64;
+        let textSpacer = 50;
 
-        console.log("Center X:" + centerX + ", Center Y:" + centerY);
-        //this.add.text(centerX, centerY-(2*textSpacer), 'ROCKET PATROL', menuConfig).setOrigin(0.5);
         //Initialize titlecard image
-        this.title = this.add.image(centerX -(3.25*textSpacer), centerY -(3.25*textSpacer), 'titlecard').setOrigin(0,0);
+        this.title = this.add.image(centerX, centerY, 'titlecard').setOrigin(0.53,0.9);
+
+        //Subtitle
+        this.subtitle = this.add.text(centerX, centerY+(0.5*textSpacer), 'Did you know that Orcas are one of the only natural predators of moose?', menuConfig).setOrigin(0.5);
+        //Change config for rest of menu
+        menuConfig.fontSize = '20px';
+        menuConfig.color = '#244717';
+        menuConfig.backgroundColor = '#ef7827';
 
         //Text boxes that vary based on number of players
-        this.numPlayersText = this.add.text(centerX, centerY-textSpacer, '1↑ Player', menuConfig).setOrigin(0.5);
-        this.p1Controls = this.add.text(centerX, centerY, 'Use ←→ arrows to move & (F) to Fire', menuConfig).setOrigin(0.5);
-        this.p2Controls = this.add.text(centerX, centerY+textSpacer, '', menuConfig).setOrigin(0.5);
+        this.playerCountText = this.add.text(centerX, centerY+textSpacer, '----Single Player----', menuConfig).setOrigin(0.5);
+        this.p1Controls = this.add.text(centerX, centerY+(1.75*textSpacer), 'Use ←→ arrows to move & (S) to Swim', menuConfig).setOrigin(0.5);
+        this.p2Controls = this.add.text(centerX, centerY+(2.5*textSpacer), '', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.startText = this.add.text(centerX, centerY+(2*textSpacer), 'Press ← for Easy and → for Hard', menuConfig).setOrigin(0.5);
+        this.startText = this.add.text(centerX, centerY+(3.25*textSpacer), 'Press ← for Easy and → for Hard', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '16px';
+        menuConfig.color = '#244717';
+        menuConfig.backgroundColor = '#ef7827';
+        this.numPlayersText = this.add.text(centerX, centerY+(4*textSpacer), 'Press ↑ for 2 Players', menuConfig).setOrigin(0.5);
 
         //Define keyboard inputs
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -113,17 +122,19 @@ class Menu extends Phaser.Scene {
 
     increasePlayers(){
       //Update screen for 2 player menu
-      this.numPlayersText.text = '2↓ Players';
-      this.p1Controls.text = 'P1: (D) and (G) to move & (F) to Fire';
-      this.p2Controls.text = 'P2: ↑/↓ to change ship, ←/→ for speed';
+      this.playerCountText.text = '------2 Players------';
+      this.numPlayersText.text = 'Press ↓ for 1 Player';
+      this.p1Controls.text = 'Predator: (A) and (D) to move ←/→ & (S) to Swim';
+      this.p2Controls.text = 'Prey: ↑/↓ to change moose, ←/→ for speed';
       this.startText.text = 'Press → to Start';
 
     }
 
     decreasePlayers(){
       //Update screen for 1 player menu
-      this.numPlayersText.text = '1↑ Player';
-      this.p1Controls.text = 'Use ←→ arrows to move & (F) to Fire';
+      this.playerCountText.text = '----Single Player----';
+      this.numPlayersText.text = 'Press ↑ for 2 Players';
+      this.p1Controls.text = 'Use ←→ arrows to move & (S) to Swim';
       this.p2Controls.text = '';
       this.startText.text = 'Press ← for Easy and → for Hard';
     }

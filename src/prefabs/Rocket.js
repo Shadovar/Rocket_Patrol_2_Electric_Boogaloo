@@ -27,16 +27,16 @@ class Rocket extends Phaser.GameObjects.Sprite {
         }
         //Two player horizontal inputs
         else{
-            if(keyD.isDown && this.x >= 47){
+            if(keyA.isDown && this.x >= 47){
                 this.x -= this.horizontalSpeed;
             }
-            if(keyG.isDown && this.x <= game.config.width-62){
+            if(keyD.isDown && this.x <= game.config.width-62){
                 this.x += this.horizontalSpeed;
             }   
         }
 
         //Firing
-        if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
+        if(Phaser.Input.Keyboard.JustDown(keyS) && !this.isFiring){
             this.isFiring = true;
             this.horizontalSpeed = 1;
             this.sfxRocket.play();
