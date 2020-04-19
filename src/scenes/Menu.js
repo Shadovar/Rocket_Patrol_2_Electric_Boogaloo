@@ -8,11 +8,17 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+
+        // load images
+        this.load.image('titlecard', './assets/TitleCard.png');
     }
 
     create() {
         //Initialize number of players
         this.numPlayers = 1;
+
+        //Create background
+        this.add.rectangle(0, 0, game.config.width, game.config.height, '0x358CA6').setOrigin(0,0);
 
         //Initialize score text
         let menuConfig = {
@@ -34,7 +40,9 @@ class Menu extends Phaser.Scene {
         let textSpacer = 64;
 
         console.log("Center X:" + centerX + ", Center Y:" + centerY);
-        this.add.text(centerX, centerY-(2*textSpacer), 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        //this.add.text(centerX, centerY-(2*textSpacer), 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        //Initialize titlecard image
+        this.title = this.add.image(centerX -(3.25*textSpacer), centerY -(3.25*textSpacer), 'titlecard').setOrigin(0,0);
 
         //Text boxes that vary based on number of players
         this.numPlayersText = this.add.text(centerX, centerY-textSpacer, '1↑ Player', menuConfig).setOrigin(0.5);

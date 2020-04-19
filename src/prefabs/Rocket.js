@@ -8,35 +8,37 @@ class Rocket extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
 
         this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
+
+        //Set the default horizontal speed to 2 pixels/frame
+        this.horizontalSpeed = 2;
     }
 
     update()
     {
         //Horizontal movement
-        if(!this.isFiring){
-            //Single player horizontal inputs
-            if(game.settings.numPlayers == 1){
-                if(keyLEFT.isDown && this.x >= 47){
-                    this.x -= 2;
-                }
-                if(keyRIGHT.isDown && this.x <= game.config.width-62){
-                    this.x += 2;
-                }
+        //Single player horizontal inputs
+        if(game.settings.numPlayers == 1){
+            if(keyLEFT.isDown && this.x >= 47){
+                this.x -= this.horizontalSpeed;
             }
-            //Two player horizontal inputs
-            else{
-                if(keyD.isDown && this.x >= 47){
-                    this.x -= 2;
-                }
-                if(keyG.isDown && this.x <= game.config.width-62){
-                    this.x += 2;
-                }   
+            if(keyRIGHT.isDown && this.x <= game.config.width-62){
+                this.x += this.horizontalSpeed;
             }
+        }
+        //Two player horizontal inputs
+        else{
+            if(keyD.isDown && this.x >= 47){
+                this.x -= this.horizontalSpeed;
+            }
+            if(keyG.isDown && this.x <= game.config.width-62){
+                this.x += this.horizontalSpeed;
+            }   
         }
 
         //Firing
         if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
             this.isFiring = true;
+            this.horizontalSpeed = 1;
             this.sfxRocket.play();
         }
 
@@ -56,5 +58,6 @@ class Rocket extends Phaser.GameObjects.Sprite {
     {
         this.isFiring = false;
         this.y = 431;
+        this.horizontalSpeed = 2;
     }
 }

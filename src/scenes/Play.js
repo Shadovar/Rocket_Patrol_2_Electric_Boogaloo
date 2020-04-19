@@ -16,7 +16,7 @@ class Play extends Phaser.Scene {
     create() {
         //Display scene text
         console.log(this);
-        this.add.text(20,20,"Rocket Patrol Play");
+        this.add.text(20,20,"Moose Hunter Play");
 
         //Place tile sprite
         this.starfield = this.add.tileSprite(0,0,640,480,'starfield').setOrigin(0,0);
@@ -29,16 +29,18 @@ class Play extends Phaser.Scene {
         this.ship03 = new Starship(this, game.config.width + 192, 132, 'spaceship', 0, 30, 3).setOrigin(0,0);
         this.ship02 = new Starship(this, game.config.width + 96, 196, 'spaceship', 0, 20, 2).setOrigin(0,0);
         this.ship01 = new Starship(this, game.config.width, 260, 'spaceship', 0, 10, 1).setOrigin(0,0);
+        //Instantiate tracker of p2's selected ship
+        this.p2Ship = {
+            num: 0,
+            ship: this.ship01
+        };
         if(game.settings.numPlayers == 2){
             //In a 2 player game, set the selected ship to be the lowest one 
             this.ship01.toggleSelected();
             this.ship01.setTint('0x885200');
+            this.p2Ship.num = 1; //Only register it as the selected ship if there is a 2nd player
         }
-        //Instantiate tracker of p2's selected ship
-        this.p2Ship = {
-            num: 1,
-            ship: this.ship01
-        };
+
         
         //Create white rectangle border
         //SetOrigin is relative to object, not scene
@@ -63,7 +65,7 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 17, first: 0}),
-            frameRate: 30
+            frameRate: 18
         });
 
         //Instantiate score
@@ -130,8 +132,8 @@ class Play extends Phaser.Scene {
         }
 
         //scroll starfield
-        this.starfield.tilePositionX -= 3.5;
-        this.starfield.tilePositionY += 1.25;
+        this.starfield.tilePositionX += 3.5;
+        this.starfield.tilePositionY -= 1;
 
         //only update player/enemies if game is not over
         if(!this.gameOver){
@@ -181,10 +183,10 @@ class Play extends Phaser.Scene {
     checkCollision(rocket, ship)
     {
             // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x && 
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship. y){
+        if (rocket.x < (ship.x + ship.width - 20) && 
+            rocket.x + rocket.width > (ship.x + 20) && 
+            rocket.y < (ship.y + ship.height - 20) &&
+            (rocket.height + rocket.y - 5) > (ship. y + 20)){
 
             return true;
         } else {
@@ -220,7 +222,7 @@ class Play extends Phaser.Scene {
             ship.reset();
             if(game.settings.numPlayers == 2){
                 this.p2Score += ship.p2Points;
-                if(ship.id == this.p2Ship){ //The ship scores double if it is currently selected
+                if(ship.id == this.p2Ship.num){ //The ship scores double if it is currently selected
                     this.p2Score += ship.p2Points;
                 }
                 this.scoreRight.text = Math.floor(this.p2Score);
